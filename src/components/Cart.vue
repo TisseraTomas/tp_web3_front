@@ -15,12 +15,21 @@
         <v-list-item v-for="it in items" :key="it.id">
           <v-list-item-content>
             <div class="font-weight-medium">{{ it.name }}</div>
-            <div class="text-caption">{{ formatPrice(it.price) }} x {{ it.qty }} = {{ formatPrice(it.price * it.qty) }}</div>
+            <div class="text-caption">
+              {{ formatPrice(it.price) }} x {{ it.qty }} =
+              {{ formatPrice(it.price * it.qty) }}
+            </div>
           </v-list-item-content>
 
           <v-list-item-action>
             <v-btn icon small @click="decrease(it.id)">−</v-btn>
-            <v-btn icon small @click="increase(it.id)">+</v-btn>
+            <v-btn
+              icon
+              small
+              :disabled="getStock(it.id) === 0"
+              @click="increase(it.id)"
+              >+</v-btn
+            >
             <v-btn icon small color="error" @click="remove(it.id)">x</v-btn>
           </v-list-item-action>
         </v-list-item>
@@ -34,17 +43,31 @@
 </template>
 
 <script setup>
-import cartStore from '../stores/cart.js'
-import { computed } from 'vue'
+import cartStore from "../stores/cart.js";
+import { computed } from "vue";
+import productsStore from '../stores/products.js'
 
-const items = cartStore.state.items
-const total = cartStore.total
+const items = cartStore.state.items;
+const total = cartStore.total;
 
-function increase(id) { cartStore.increaseQty(id) }
-function decrease(id) { cartStore.decreaseQty(id) }
-function remove(id) { cartStore.removeItem(id) }
+function getStock(id) {
+  const p = productsStore.state.products.find(pr => pr.id === id)
+  return p ? p.stock : 0
+}
+function increase(id) {
+  cartStore.increaseQty(id);
+}
+function decrease(id) {
+  cartStore.decreaseQty(id);
+}
+function remove(id) {
+  cartStore.removeItem(id);
+}
 
 function formatPrice(n) {
-  return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(n)
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+  }).format(n);
 }
 </script>

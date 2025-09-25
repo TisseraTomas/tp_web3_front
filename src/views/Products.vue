@@ -5,21 +5,19 @@
 
     <!-- Escucho add-to-cart emitido por ProductList -->
     <ProductList @add-to-cart="handleAddToCart" />
-
-    <!-- Muestro el carrito (componente separado) -->
-    <Cart />
+    
   </v-container>
 </template>
 
 <script setup>
 import ProductList from '../components/ProductList.vue'
 import Cart from '../components/Cart.vue'
-import products from '../data/products.js'
+import productsStore from '../stores/products.js'
 import cartStore from '../stores/cart.js'
 
 function handleAddToCart(id) {
   // Encuentro el producto por id y lo agrego (simula "guardar")
-  const p = products.find(x => x.id === id)
+  const p = productsStore.state.products.find(x => x.id === id)
   if (!p) {
     console.warn('Producto no encontrado:', id)
     return

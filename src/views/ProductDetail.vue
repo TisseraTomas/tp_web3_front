@@ -1,7 +1,10 @@
 <!-- src/views/ProductDetail.vue -->
 <template>
   <v-container>
-    <v-btn text @click="$router.back()">← Volver</v-btn>
+    
+    <v-btn class= "mt-10" variant="text" @click="$router.back()">
+      ← Volver
+    </v-btn>
 
     <div v-if="!product">
       <v-alert type="error">Producto no encontrado.</v-alert>
@@ -21,12 +24,12 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import products from '../data/products.js'
+import productsStore from '../stores/products.js'
 import cartStore from '../stores/cart.js'
 
 const route = useRoute()
 const id = Number(route.params.id)
-const product = products.find(p => p.id === id)
+const product = productsStore.state.products.find(p => p.id === id)
 
 function add() {
   if (product && product.stock > 0) {

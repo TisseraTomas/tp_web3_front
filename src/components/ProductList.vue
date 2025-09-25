@@ -27,13 +27,15 @@
 <script setup>
 import { ref, computed } from 'vue'
 import ProductItem from './ProductItem.vue'
-import products from '../data/products.js'
+import productsStore from '../stores/products.js'
 const query = ref('')
 
 const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
-  if (!q) return products
-  return products.filter(p => p.name.toLowerCase().includes(q))
+  if (!q) return productsStore.state.products
+  return productsStore.state.products.filter(p =>
+    p.name.toLowerCase().includes(q)
+  )
 })
 
 const emit = defineEmits(['add-to-cart'])

@@ -19,6 +19,9 @@
       <router-view />
     </v-main>
 
+    <v-navigation-drawer v-model="drawer" location="end" temporary>
+      <Cart />
+    </v-navigation-drawer>
     <!-- Drawer opcional para el carrito (si querés mostrarlo en un drawer) -->
     <!-- Acá usamos un componente Cart que ya insertamos en Products view -->
   </v-app>
@@ -28,6 +31,8 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import cartStore from './stores/cart.js'
+import Cart from './components/Cart.vue'
+
 
 const router = useRouter()
 const drawer = ref(false)
