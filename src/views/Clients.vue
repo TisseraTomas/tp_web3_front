@@ -1,15 +1,26 @@
-<!-- src/views/Clients.vue -->
 <template>
-  <v-container>
-    <h2>Clientes</h2>
+  <v-container class="fill-height d-flex flex-column justify-center align-center">
+    <!-- Título -->
+    <h2 class="mt-10">Clientes</h2>
 
+    <!-- Registro rápido -->
     <QuickClientRegister @registered="onRegistered" />
 
-    <v-card class="mt-6 pa-4" v-if="clients.length > 0">
-      <div class="text-subtitle-1">Clientes registrados</div>
+    <!-- Lista de clientes -->
+    <v-card
+      v-if="clients.length > 0"
+      class="mt-6 pa-4"
+      elevation="4"
+      max-width="400"
+    >
+      <div class="text-subtitle-1 mb-2 text-center">Clientes registrados</div>
       <v-list dense>
-        <v-list-item v-for="(c, idx) in clients" :key="idx">
-          <v-list-item-content>{{ c }}</v-list-item-content>
+        <v-list-item
+          v-for="(c, idx) in clients"
+          :key="idx"
+          class="justify-center"
+        >
+          <v-list-item-content class="text-center">{{ c }}</v-list-item-content>
         </v-list-item>
       </v-list>
     </v-card>
@@ -17,15 +28,13 @@
 </template>
 
 <script setup>
-import QuickClientRegister from '../components/QuickClientRegister.vue'
-import { ref } from 'vue'
+import QuickClientRegister from "../components/QuickClientRegister.vue"
+import { ref } from "vue"
 
 const clients = ref([])
 
-// Si preferís que QuickClientRegister emita un evento 'registered', podrías escucharlo:
-// en el ejemplo anterior no emitimos, así que podés modificar el componente si querés.
-// Aquí dejo un handler vacío por si lo adaptás:
 function onRegistered(name) {
   clients.value.push(name)
 }
 </script>
+

@@ -4,11 +4,15 @@
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>Mi Tienda</v-toolbar-title>
       <v-spacer />
-      <v-btn text to="/">Inicio</v-btn>
-      <v-btn text to="/productos">Productos</v-btn>
-      <v-btn text to="/clientes">Clientes</v-btn>
+      <v-chip v-if="auth.user" color="white" text-color="primary" class="mr-3">
+        {{ auth.user.email }}
+      </v-chip>
+      <v-btn v-if="auth.isAuthenticated" @click="logout" text>Salir</v-btn>
+      <v-btn text :disabled="!auth.isAuthenticated" :to="{ name: 'home' }" router>Inicio</v-btn>
+      <v-btn text :disabled="!auth.isAuthenticated" :to="{ name: 'productos' }" router>Productos</v-btn>
+      <v-btn text :disabled="!auth.isAuthenticated" :to="{ name: 'clientes' }" router>Clientes</v-btn>  
       <v-divider vertical class="mx-3" />
-      <v-btn icon @click="toggleCart">
+      <v-btn  :disabled="!auth.isAuthenticated" icon @click="toggleCart">
         <v-badge :content="cartCount" color="red" overlap>
           <v-icon>mdi-cart</v-icon>
         </v-badge>
@@ -32,10 +36,16 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import cartStore from './stores/cart.js'
 import Cart from './components/Cart.vue'
+import { useAuth } from "./stores/auth";
 
-
+const auth = useAuth();
 const router = useRouter()
 const drawer = ref(false)
+
+function logout() {
+  auth.logout();
+  router.push("/login");
+}
 
 function toggleCart() {
   drawer.value = !drawer.value
